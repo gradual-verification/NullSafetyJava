@@ -1,0 +1,67 @@
+diff --git a/dependencies.gradle b/dependencies.gradle
+index 387fa91..b966d3f 100644
+--- a/dependencies.gradle
++++ b/dependencies.gradle
+@@ -24,7 +24,7 @@ def build = [
+         kotlinPlugin     : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+         kotlinAllOpen    : "org.jetbrains.kotlin:kotlin-allopen:${versions.kotlin}",
+         manifestMerger   : "com.android.tools.build:manifest-merger:26.1.2",
+-        nullaway         : "com.uber.nullaway:nullaway:0.5.3",
++        nullaway         : "com.uber.nullaway:nullaway:0.6.4",
+         rockerPlugin     : "gradle.plugin.com.fizzed:rocker-gradle-plugin:${versions.rocker}",
+         rockerRuntime    : "com.fizzed:rocker-runtime:${versions.rocker}",
+         shadowJar        : "com.github.jengelman.gradle.plugins:shadow:2.0.1",
+diff --git a/java-app/build.gradle b/java-app/build.gradle
+index 0829f2e..b025d54 100644
+--- a/java-app/build.gradle
++++ b/java-app/build.gradle
+@@ -1,6 +1,8 @@
+ apply plugin: "java-library"
+ apply plugin: "application"
+ 
++mainClassName = 'com.uber.okbuck.example.javalib.DummyJavaClass'
++
+ dependencies {
+     implementation deps.external.gson
+     implementation deps.external.dagger
+diff --git a/libraries/customLintLibrary/build.gradle b/libraries/customLintLibrary/build.gradle
+index 6bc3569..712e316 100644
+--- a/libraries/customLintLibrary/build.gradle
++++ b/libraries/customLintLibrary/build.gradle
+@@ -1,6 +1,8 @@
+ apply plugin: "java-library"
+ apply plugin: "application"
+ 
++mainClassName = 'com.uber.lint.LintRegistry'
++
+ dependencies {
+     compileOnly deps.lint.lintApi
+     compileOnly deps.lint.lintChecks
+diff --git a/libraries/emptylibrary/build.gradle b/libraries/emptylibrary/build.gradle
+index 56d177f..c403c73 100644
+--- a/libraries/emptylibrary/build.gradle
++++ b/libraries/emptylibrary/build.gradle
+@@ -4,6 +4,12 @@ android {
+     lintOptions {
+         disable "HardcodedDebugMode"
+     }
++    // https://stackoverflow.com/questions/45922916/robolectric-resourcesnotfoundexception-string-resource-id-with-android-gradle
++	testOptions {
++		unitTests {
++			includeAndroidResources = true
++		}
++	}
+ }
+ 
+ dependencies {
+diff --git a/libraries/lintErrorLibrary/build.gradle b/libraries/lintErrorLibrary/build.gradle
+index f351b0b..35aa4e6 100644
+--- a/libraries/lintErrorLibrary/build.gradle
++++ b/libraries/lintErrorLibrary/build.gradle
+@@ -13,5 +13,6 @@ dependencies {
+ android {
+     lintOptions {
+ 	    warningsAsErrors true
++		abortOnError false
+     }
+ }

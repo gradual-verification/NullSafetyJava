@@ -1,0 +1,39 @@
+diff --git a/skaffold-gradle-plugin/build.gradle b/skaffold-gradle-plugin/build.gradle
+index 11394e8..edb15dc 100644
+--- a/skaffold-gradle-plugin/build.gradle
++++ b/skaffold-gradle-plugin/build.gradle
+@@ -65,7 +65,7 @@ dependencies {
+     compile gradleApi()
+ 
+     // NullAway errorprone plugin
+-    annotationProcessor 'com.uber.nullaway:nullaway:0.5.2'
++    annotationProcessor 'com.uber.nullaway:nullaway:0.6.4'
+     errorprone 'com.google.errorprone:error_prone_core:2.3.1'
+ }
+ 
+diff --git a/skaffold-maven-plugin/pom.xml b/skaffold-maven-plugin/pom.xml
+index 2057978..0f80f1e 100644
+--- a/skaffold-maven-plugin/pom.xml
++++ b/skaffold-maven-plugin/pom.xml
+@@ -284,7 +284,7 @@
+                 <path>
+                   <groupId>com.uber.nullaway</groupId>
+                   <artifactId>nullaway</artifactId>
+-                  <version>0.5.2</version>
++                  <version>0.6.4</version>
+                 </path>
+               </annotationProcessorPaths>
+               <compilerArgs>
+diff --git a/skaffold-plugins-core/build.gradle b/skaffold-plugins-core/build.gradle
+index 90933ba..1176e71 100644
+--- a/skaffold-plugins-core/build.gradle
++++ b/skaffold-plugins-core/build.gradle
+@@ -42,7 +42,7 @@ dependencies {
+     testCompile 'org.mockito:mockito-core:2.21.0'
+ 
+     // NullAway errorprone plugin
+-    annotationProcessor 'com.uber.nullaway:nullaway:0.5.2'
++    annotationProcessor 'com.uber.nullaway:nullaway:0.6.4'
+     errorprone 'com.google.errorprone:error_prone_core:2.3.1'
+ }
+ 

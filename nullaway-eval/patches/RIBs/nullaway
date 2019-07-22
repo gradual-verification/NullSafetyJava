@@ -1,0 +1,82 @@
+diff --git a/android/gradle/dependencies.gradle b/android/gradle/dependencies.gradle
+index 8bd69da..22ad9a6 100755
+--- a/android/gradle/dependencies.gradle
++++ b/android/gradle/dependencies.gradle
+@@ -28,7 +28,7 @@ def apt = [
+     androidApi: "com.google.android:android:2.2.1",
+     autoCommon: "com.google.auto:auto-common:0.8",
+     autoService: "com.google.auto.service:auto-service:1.0-rc3",
+-    nullAway: 'com.uber.nullaway:nullaway:0.3.2',
++    nullAway: 'com.uber.nullaway:nullaway:0.6.4',
+     daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
+     javapoet: "com.squareup:javapoet:1.9.0",
+     javax: "javax.annotation:jsr250-api:1.0",
+diff --git a/android/libraries/rib-android-test/build.gradle b/android/libraries/rib-android-test/build.gradle
+index a6d9be2..4dcc397 100644
+--- a/android/libraries/rib-android-test/build.gradle
++++ b/android/libraries/rib-android-test/build.gradle
+@@ -35,6 +35,9 @@ android {
+         sourceCompatibility JavaVersion.VERSION_1_7
+         targetCompatibility JavaVersion.VERSION_1_7
+     }
++    lintOptions {
++        abortOnError false
++    }
+ }
+ 
+ dependencies {
+diff --git a/android/libraries/rib-android/build.gradle b/android/libraries/rib-android/build.gradle
+index 6d47039..c88b374 100644
+--- a/android/libraries/rib-android/build.gradle
++++ b/android/libraries/rib-android/build.gradle
+@@ -35,6 +35,9 @@ android {
+         sourceCompatibility JavaVersion.VERSION_1_7
+         targetCompatibility JavaVersion.VERSION_1_7
+     }
++    lintOptions {
++        abortOnError false
++    }
+ }
+ 
+ dependencies {
+diff --git a/android/libraries/rib-screen-stack-base/build.gradle b/android/libraries/rib-screen-stack-base/build.gradle
+index 441cb62..c6abbd9 100644
+--- a/android/libraries/rib-screen-stack-base/build.gradle
++++ b/android/libraries/rib-screen-stack-base/build.gradle
+@@ -35,6 +35,9 @@ android {
+         sourceCompatibility JavaVersion.VERSION_1_7
+         targetCompatibility JavaVersion.VERSION_1_7
+     }
++    lintOptions {
++        abortOnError false
++    }
+ }
+ 
+ dependencies {
+diff --git a/android/libraries/rib-workflow/build.gradle b/android/libraries/rib-workflow/build.gradle
+index a949072..9f7fd94 100644
+--- a/android/libraries/rib-workflow/build.gradle
++++ b/android/libraries/rib-workflow/build.gradle
+@@ -35,6 +35,9 @@ android {
+         sourceCompatibility JavaVersion.VERSION_1_7
+         targetCompatibility JavaVersion.VERSION_1_7
+     }
++    lintOptions {
++        abortOnError false
++    }
+ }
+ 
+ dependencies {
+diff --git a/android/settings.gradle b/android/settings.gradle
+index 31c1a1a..5af3347 100644
+--- a/android/settings.gradle
++++ b/android/settings.gradle
+@@ -10,7 +10,7 @@ include ':libraries:rib-router-navigator'
+ include ':libraries:rib-uava'
+ include ':libraries:rib-workflow'
+ include ':libraries:rib-workflow-test-utils'
+-include ':tooling:rib-intellij-plugin'
++//include ':tooling:rib-intellij-plugin'
+ include ':tooling:autodispose-error-prone-checker'
+ include ':tutorials:tutorial1'
+ include ':tutorials:tutorial2'

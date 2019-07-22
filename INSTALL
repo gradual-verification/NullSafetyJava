@@ -1,0 +1,92 @@
+## NullAway Installation Guide
+
+This source repository consists of two sub-directories:
+1. `NullAway`: contains sources for our null checking tool.
+2. `nullaway-eval`: contains scripts and configuration files that can be used to reproduce the main results of the paper (§8.2, §8.4).
+
+
+## 1. Setup:
+Before you begin, you'll need to install git, [JDK 8](https://openjdk.java.net/install/), and [Android SDK](https://developer.android.com/studio/#downloads). Then set `JAVA_HOME` and `ANDROID_HOME` to the installation directories.
+Also, in some systems `JAVA_TOOL_OPTIONS` must be set to "-Dfile.encoding=UTF8" in order to properly handle unicode.
+
+On an Ubuntu Linux system:
+```
+apt update
+apt install git wget zip unzip xz-utils time openjdk-8-jdk python3-pip tzdata
+mkdir -p ~/android-sdk && cd ~/android-sdk
+wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+unzip sdk-tools-linux-4333796.zip
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8
+export ANDROID_HOME=~/android-sdk
+ln -s $ANDROID_HOME /usr/lib/android-sdk
+$ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "platforms;android-28" "build-tools;28.0.2"
+```
+
+## 2. Building NullAway
+Extract the repository to `<install_dir>`. 
+Note: Make sure the installation path `<install_dir>` doesn't have any spaces.
+```
+cd <install_dir>/NullAway
+./gradlew build
+```
+
+NullAway is now ready for use with your Java projects. See [here](https://github.com/uber/NullAway#java-non-android) for usage instructions.
+
+## 3. Benchmark Evaluation
+3.1. Install [Python 3](https://docs.python.org/3/using/index.html), [pip](https://pip.pypa.io/en/stable/installing/). Make sure `python --version` says `Python 3.x.x`.
+
+3.2. Install [Checker Framework](https://checkerframework.org/manual/#installation) v.2.8.1 and [Infer](https://fbinfer.com/docs/getting-started.html) v.0.15.0.
+```
+wget https://checkerframework.org/checker-framework-2.8.1.zip
+unzip checker-framework-2.8.1.zip -d /usr/lib/
+wget https://github.com/facebook/infer/releases/download/v0.15.0/infer-linux64-v0.15.0.tar.xz
+mkdir -p /usr/lib/infer-linux64-v0.15.0
+tar -xf infer-linux64-v0.15.0.tar.xz --directory /usr/lib/
+```
+
+3.3. Install Python modules
+```
+cd <install_dir>/nullaway-eval
+pip install -r requirements.txt
+```
+
+3.4. Update paths in `config.ini`
+
+These paths locate the installations of Android SDK (step 1), NullAway (step 2), Checker Framerwork (step 3.2), and Infer (step 3.2) to be used by the evaluation scripts.
+
+3.5. Run the evaluation script
+
+3.5.1. Before running the scripts, make sure the individual projects build without compile errors. 
+```
+python eval_repos.py -base
+```
+This will clone and build the benchmark projects into `<install_dir>/nullaway-eval/repos/`. You should see a `PASS` message for each benchmark indicating that its build was successful.
+Known issue: Note that `UnicodeEncodeError` related stack traces can be safely ignored.
+
+3.5.2. 
+```
+python eval_repos.py
+```
+This generates a file `result.csv` with the build times of each project. 
+
+*Note*: If all builds of a project (say `okbuck`) fail, although its `-base` build in 3.5.1 had `PASS`ed, most likely the Gradle build cache is outdated. Rebuild such projects individually as follows:\
+```
+python javac_args.py okbuck
+python eval_repos.py okbuck
+```
+
+3.5.3. 
+You can then plot the results by running-
+```
+python plot.py
+```
+*Note*: Our results were produced on an Intel Xeon E5-2620 processor with 16GB RAM running Linux 4.4 on bare metal. Running on a laptop or a container might produce less reliable performance measurements.  
+
+For our analysis of additional warnings (in §8.4), run
+```
+python eval_repos.py -w
+python warns.py eval.log
+```
+This produces a detailed log with all compilation warnings in `eval.log` and a summary of nullness warnings in `warns.txt`.
+

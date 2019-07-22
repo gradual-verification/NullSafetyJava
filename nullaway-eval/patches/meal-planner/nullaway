@@ -1,0 +1,13 @@
+diff --git a/build.gradle b/build.gradle
+index c0fbb2b..eb96296 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -71,7 +71,7 @@ sourceCompatibility = 1.8
+ targetCompatibility = 1.8
+ 
+ dependencies {
+-  annotationProcessor 'com.uber.nullaway:nullaway:0.4.5'
++  annotationProcessor 'com.uber.nullaway:nullaway:0.6.4'
+ 
+   compile(
+     'org.jsoup:jsoup:1.10.2',

@@ -1,0 +1,13 @@
+diff --git a/dependencies.gradle b/dependencies.gradle
+index ff3d973..2f63889 100644
+--- a/dependencies.gradle
++++ b/dependencies.gradle
+@@ -53,7 +53,7 @@ versions.kotlin = "1.2"
+ versions.mockito = "2.13.3"
+ versions.mockito_all = "1.10.19"
+ versions.mockwebserver = "3.9.1"
+-versions.nullaway = "0.5.6"
++versions.nullaway = "0.6.4"
+ versions.okhttp3 = "3.9.1"
+ versions.paging = "1.0.0-alpha3"
+ versions.pio_softpwm = "0.1"

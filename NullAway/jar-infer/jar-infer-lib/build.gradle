@@ -1,0 +1,32 @@
+plugins {
+    id "java"
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    // uncomment if you want to use wala.dalvik or wala.scandroid
+    //maven { url "https://raw.github.com/msridhar/maven-jars/mvn-repo/" }
+}
+
+dependencies {
+    compile deps.build.wala
+    compile deps.build.guava
+    compile deps.build.commonsIO
+    compileOnly deps.build.errorProneCheckApi
+
+    testCompile deps.test.junit4
+    testCompile(deps.build.errorProneTestHelpers) {
+        exclude group: "junit", module: "junit"
+    }
+    testCompile project(":jar-infer:test-java-lib-jarinfer")
+    testRuntime deps.build.errorProneCheckApi
+}
+
+test {
+    maxHeapSize = "1024m"
+    jvmArgs "-Xbootclasspath/p:${configurations.errorproneJavac.asPath}"
+}
+
+apply from: rootProject.file("gradle/gradle-mvn-push.gradle")

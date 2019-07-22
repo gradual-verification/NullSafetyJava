@@ -1,0 +1,128 @@
+/*
+ * Copyright (C) 2017. Uber Technologies
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import net.ltgt.gradle.errorprone.CheckSeverity
+
+plugins {
+  id "com.github.johnrengelman.shadow"
+  id "java"
+  // For code coverage:
+  id 'jacoco'
+  id 'com.github.kt3k.coveralls'
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+configurations.all {
+    resolutionStrategy {
+        // Force needed, since:
+        // a) There are newer versions of CF than the one we forked
+        // b) It seems x.y.z-name < x.y.z for gradle dependency resolution purposes.
+        force deps.build.checkerDataflow
+    }
+}
+
+dependencies {
+    compileOnly deps.apt.autoValue
+    annotationProcessor deps.apt.autoValue
+    compileOnly deps.apt.autoService
+    annotationProcessor deps.apt.autoService
+
+    compileOnly deps.build.errorProneCheckApi
+    compile deps.build.checkerDataflow
+    shadow deps.build.guava
+
+    testCompile deps.test.junit4
+    testCompile(deps.build.errorProneTestHelpers) {
+        exclude group: "junit", module: "junit"
+    }
+    testCompile deps.test.jetbrainsAnnotations
+    testCompile deps.test.junit5Jupiter
+    testCompile deps.test.cfQual
+    testCompile deps.test.cfCompatQual
+    testCompile project(":test-java-lib")
+    testCompile deps.test.inferAnnotations
+    testCompile deps.apt.javaxInject
+    testCompile deps.test.rxjava2
+    testCompile deps.test.commonsLang
+    testCompile deps.test.commonsLang3
+}
+
+// We include and shade the checker framework jars into the NullAway jar, as we may have custom
+// changes.
+shadowJar {
+    // set classifier to null since we want the artifact uploaded to Maven Central to be the
+    // shadow jar.  Without this, the shadow jar is built with a '-all' suffix in the name.
+    classifier = null
+    relocate "org.checkerframework", "shadow.checkerframework"
+}
+// Since we set classifier to null above, both the normal jar artifact and the shadow jar have
+// the same name, which can cause races if we are not careful.  We force shadowJar to depend on
+// jar, so we know that the shadow jar will always overwrite the normal one.  We also force
+// assemble to depend on shadowJar, to avoid races between running tests / signing archives
+// and building the shadow jar.
+//
+// We also require that any other sub-projects only depend on the shadow configuration of this
+// project; otherwise weird races can occur.  Eventually, we should fix this by only renaming the
+// shadow jar artifact before the uploadArchives task runs.
+shadowJar.dependsOn jar
+assemble.dependsOn shadowJar
+
+javadoc {
+    failOnError = false
+}
+
+
+test {
+  maxHeapSize = "1024m"
+  if (!JavaVersion.current().java9Compatible) {
+    jvmArgs "-Xbootclasspath/p:${configurations.errorproneJavac.asPath}"
+  }
+}
+
+apply from: rootProject.file("gradle/gradle-mvn-push.gradle")
+
+def configurePomForShadow(pom) {
+  pom.scopeMappings.mappings.remove(project.configurations.compile)
+  pom.scopeMappings.mappings.remove(project.configurations.runtime)
+  pom.scopeMappings.addMapping(MavenPlugin.COMPILE_PRIORITY, project.configurations.shadow, Conf2ScopeMappingContainer.COMPILE)
+}
+
+install {
+  repositories.mavenInstaller {
+    configurePomForShadow(pom)
+  }
+}
+install.dependsOn shadowJar
+
+uploadArchives {
+  repositories.mavenDeployer {
+    configurePomForShadow(pom)
+  }
+}
+uploadArchives.dependsOn shadowJar
+
+jacoco {
+  toolVersion = "0.8.2"
+}
+
+// From https://github.com/kt3k/coveralls-gradle-plugin
+jacocoTestReport {
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
+}

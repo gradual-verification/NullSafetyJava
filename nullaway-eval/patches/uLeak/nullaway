@@ -1,0 +1,27 @@
+diff --git a/gradle/dependencies.gradle b/gradle/dependencies.gradle
+index 5bc4f69..98738c2 100755
+--- a/gradle/dependencies.gradle
++++ b/gradle/dependencies.gradle
+@@ -28,7 +28,7 @@ def build = [
+ 
+     checkerFramework: 'org.checkerframework:dataflow:2.1.14',
+     errorProne: "com.google.errorprone:error_prone_core:${versions.errorProne}",
+-    nullAway: 'com.uber.nullaway:nullaway:0.1.6',
++    nullAway: 'com.uber.nullaway:nullaway:0.6.4',
+ 
+     repositories: [
+         plugins: 'https://plugins.gradle.org/m2/'
+diff --git a/uleak/build.gradle b/uleak/build.gradle
+index 4408b02..93f7870 100755
+--- a/uleak/build.gradle
++++ b/uleak/build.gradle
+@@ -40,6 +40,9 @@ android {
+     sourceCompatibility JavaVersion.VERSION_1_7
+     targetCompatibility JavaVersion.VERSION_1_7
+   }
++  lintOptions {
++    abortOnError false
++  }
+ }
+ 
+ dependencies {

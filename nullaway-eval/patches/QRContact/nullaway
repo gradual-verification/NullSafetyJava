@@ -1,0 +1,30 @@
+diff --git a/app/build.gradle b/app/build.gradle
+index fa12393..9122eb1 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -16,6 +16,9 @@ android {
+             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+         }
+     }
++    lintOptions {
++        abortOnError false
++    }
+ }
+ 
+ dependencies {
+diff --git a/app/libs/picasso-master/picasso-master/build.gradle b/app/libs/picasso-master/picasso-master/build.gradle
+index 8ba0630..0cefd0a 100644
+--- a/app/libs/picasso-master/picasso-master/build.gradle
++++ b/app/libs/picasso-master/picasso-master/build.gradle
+@@ -25,7 +25,7 @@ buildscript {
+     truth: 'com.google.truth:truth:0.42',
+     robolectric: 'org.robolectric:robolectric:4.0.1',
+     mockito: 'org.mockito:mockito-core:2.23.0',
+-    nullaway: 'com.uber.nullaway:nullaway:0.6.0'
++    nullaway: 'com.uber.nullaway:nullaway:0.6.4'
+   ]
+ 
+   ext.isCi = "true" == System.getenv('CI')
+diff --git a/gradlew b/gradlew
+old mode 100644
+new mode 100755

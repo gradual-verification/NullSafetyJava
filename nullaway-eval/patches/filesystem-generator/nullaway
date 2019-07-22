@@ -1,0 +1,13 @@
+diff --git a/build.gradle b/build.gradle
+index bb836b4..1a9628b 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -14,7 +14,7 @@ repositories {
+ 
+ dependencies {
+     errorprone "com.google.errorprone:error_prone_core:2.3.1"
+-    annotationProcessor "com.uber.nullaway:nullaway:0.4.7"
++    annotationProcessor "com.uber.nullaway:nullaway:0.6.4"
+ 
+     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+     testCompile "org.assertj:assertj-core:3.10.0"

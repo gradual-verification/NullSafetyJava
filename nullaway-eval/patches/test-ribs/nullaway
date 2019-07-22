@@ -1,0 +1,85 @@
+diff --git a/gradle/dependencies.gradle b/gradle/dependencies.gradle
+index 8bd69da..22ad9a6 100755
+--- a/gradle/dependencies.gradle
++++ b/gradle/dependencies.gradle
+@@ -28,7 +28,7 @@ def apt = [
+     androidApi: "com.google.android:android:2.2.1",
+     autoCommon: "com.google.auto:auto-common:0.8",
+     autoService: "com.google.auto.service:auto-service:1.0-rc3",
+-    nullAway: 'com.uber.nullaway:nullaway:0.3.2',
++    nullAway: 'com.uber.nullaway:nullaway:0.6.4',
+     daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
+     javapoet: "com.squareup:javapoet:1.9.0",
+     javax: "javax.annotation:jsr250-api:1.0",
+diff --git a/libraries/rib-android-test/build.gradle b/libraries/rib-android-test/build.gradle
+index a6d9be2..77e97e5 100644
+--- a/libraries/rib-android-test/build.gradle
++++ b/libraries/rib-android-test/build.gradle
+@@ -35,6 +35,10 @@ android {
+         sourceCompatibility JavaVersion.VERSION_1_7
+         targetCompatibility JavaVersion.VERSION_1_7
+     }
++
++    lintOptions {
++        abortOnError false
++    }
+ }
+ 
+ dependencies {
+diff --git a/libraries/rib-android/build.gradle b/libraries/rib-android/build.gradle
+index 6d47039..d6af2b0 100644
+--- a/libraries/rib-android/build.gradle
++++ b/libraries/rib-android/build.gradle
+@@ -35,6 +35,10 @@ android {
+         sourceCompatibility JavaVersion.VERSION_1_7
+         targetCompatibility JavaVersion.VERSION_1_7
+     }
++
++    lintOptions {
++        abortOnError false
++    }
+ }
+ 
+ dependencies {
+diff --git a/libraries/rib-screen-stack-base/build.gradle b/libraries/rib-screen-stack-base/build.gradle
+index 441cb62..1aa756a 100644
+--- a/libraries/rib-screen-stack-base/build.gradle
++++ b/libraries/rib-screen-stack-base/build.gradle
+@@ -35,6 +35,10 @@ android {
+         sourceCompatibility JavaVersion.VERSION_1_7
+         targetCompatibility JavaVersion.VERSION_1_7
+     }
++
++    lintOptions {
++        abortOnError false
++    }
+ }
+ 
+ dependencies {
+diff --git a/libraries/rib-workflow/build.gradle b/libraries/rib-workflow/build.gradle
+index a949072..8b37938 100644
+--- a/libraries/rib-workflow/build.gradle
++++ b/libraries/rib-workflow/build.gradle
+@@ -35,6 +35,10 @@ android {
+         sourceCompatibility JavaVersion.VERSION_1_7
+         targetCompatibility JavaVersion.VERSION_1_7
+     }
++
++    lintOptions {
++        abortOnError false
++    }
+ }
+ 
+ dependencies {
+diff --git a/settings.gradle b/settings.gradle
+index 118790c..2bac1fd 100644
+--- a/settings.gradle
++++ b/settings.gradle
+@@ -10,6 +10,6 @@ include ':libraries:rib-router-navigator'
+ include ':libraries:rib-uava'
+ include ':libraries:rib-workflow'
+ include ':libraries:rib-workflow-test-utils'
+-include ':tooling:rib-intellij-plugin'
++//include ':tooling:rib-intellij-plugin'
+ include ':tooling:autodispose-error-prone-checker'
+ include ':app'

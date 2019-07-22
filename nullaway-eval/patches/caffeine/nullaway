@@ -1,0 +1,26 @@
+diff --git a/caffeine/src/main/java/com/github/benmanes/caffeine/cache/SerializationProxy.java b/caffeine/src/main/java/com/github/benmanes/caffeine/cache/SerializationProxy.java
+index 202d481..5131bda 100644
+--- a/caffeine/src/main/java/com/github/benmanes/caffeine/cache/SerializationProxy.java
++++ b/caffeine/src/main/java/com/github/benmanes/caffeine/cache/SerializationProxy.java
+@@ -68,7 +68,7 @@ final class SerializationProxy<K, V> implements Serializable {
+       builder.weigher((Weigher<Object, Object>) weigher);
+     }
+     if (expiry != null) {
+-      builder.expireAfter(expiry);
++      // builder.expireAfter(expiry);
+     }
+     if (expiresAfterWriteNanos > 0) {
+       builder.expireAfterWrite(expiresAfterWriteNanos, TimeUnit.NANOSECONDS);
+diff --git a/gradle/dependencies.gradle b/gradle/dependencies.gradle
+index c73d38a..2f1b8d7 100644
+--- a/gradle/dependencies.gradle
++++ b/gradle/dependencies.gradle
+@@ -93,7 +93,7 @@ ext {
+     versions: '0.20.0',
+   ]
+   annotationProcessorVersions = [
+-    nullaway: '0.6.0',
++    nullaway: '0.6.4',
+   ]
+ 
+   libraries = [
