@@ -36,7 +36,7 @@ def process_args(args):
 		if is_opt(a[i]):
 			if (a[i] == "-processorpath"):
 				a[i+1] = process_str(a[i+1],NA_paths,":")
-			if ((a[i] in args_to_remove) or 
+			if ((a[i] in args_to_remove) or
 			(a[i] in args_need_value and (is_opt(a[i+1]) or not a[i+1]))): continue
 			if re.match(EP_args,a[i]): continue
 		final_args.append(a[i])
@@ -49,7 +49,7 @@ if daemonBuild and "eradicate" in tools:
 compile_bench_cmd = "./gradlew :compile-bench:run --args='"
 compile_bench_na_cmd = "./gradlew :compile-bench-na:run --args='"
 bench_arg = "-debug -w 5 -r 5 " if daemonBuild else "-debug -w 0 -r 1 "
-infer_cmd = "time -f \"Average running time %E\" "+os.environ['FB_INFER']+"/bin/infer run -a checkers --eradicate -- javac "
+infer_cmd = "time -f \"Average running time %E\" "+os.environ['FB_INFER']+"/bin/infer run --gradual-only -- javac "
 def prepare_args(args,tool="base"):
 	final_args = args.split()
 	if allWarns: add_arg(final_args,"-Xmaxwarns","10000")

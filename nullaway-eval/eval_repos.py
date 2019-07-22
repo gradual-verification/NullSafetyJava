@@ -1,6 +1,8 @@
 from common import *
 from javac_args import *
 
+import subprocess
+
 def get_time(str):
 	sec = 0.0
 	times = str.split()[-1].split(":")
@@ -20,10 +22,16 @@ def eval_repo(repo_url, tool):
 		process_args_file(repo_url)
 	print_and_log("> Build Begin - "+repo_name(repo_url)+" - "+tool)
 	time = 0.0
-	for args in list_from_file(arg_path(repo_url)+processed_suffix):
+	n = 0
+	the_list = list_from_file(arg_path(repo_url)+processed_suffix)
+	for args in the_list:
 		global ncmd
 		ncmd += 1
 		time += parse_out(cmd_in_dir(nullaway_root, prepare_args(args,tool)))
+		pattern = 'cp /home/sam/sandbox/NullSafetyJava-master/NullAway/infer-out/bugs.txt bugs{}.txt'
+		padded = str(n).rjust(len(str(len(the_list)-1)), '0')
+		subprocess.run(pattern.format(padded), shell=True)
+		n += 1
 	check_errors()
 	return time
 
