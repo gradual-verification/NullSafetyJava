@@ -49,7 +49,14 @@ if daemonBuild and "eradicate" in tools:
 compile_bench_cmd = "./gradlew :compile-bench:run --args='"
 compile_bench_na_cmd = "./gradlew :compile-bench-na:run --args='"
 bench_arg = "-debug -w 5 -r 5 " if daemonBuild else "-debug -w 0 -r 1 "
-infer_cmd = "time -f \"Average running time %E\" "+os.environ['FB_INFER']+"/bin/infer run --gradual-only -- javac "
+
+
+def infer_cmd(tool):
+    return "time -f \"Average running time %E\" "+os.environ['FB_INFER']+"/bin/infer run --"+tool+"-only -- javac "
+
+def is_infer(tool):
+    return tool == "eradicate" or tool == "nullsafe" or tool == "gradual"
+
 def prepare_args(args,tool="base"):
 	final_args = args.split()
 	if allWarns: add_arg(final_args,"-Xmaxwarns","10000")
@@ -62,10 +69,10 @@ def prepare_args(args,tool="base"):
 		add_arg(final_args,"-processorpath",CFpath+"/checker/dist/checker.jar:"+CF_processor_jar,'prepend',last_opt)
 		add_arg(final_args,"-classpath",CFpath+"/checker/dist/checker-qual.jar",'prepend',last_opt)
 		add_arg(final_args,"-processorpath","-Xmaxerrs 10000 -Awarns -Xbootclasspath/p:"+CFpath+"/checker/dist/jdk8.jar -Astubs="+CFpath+"/checker/resources/javadoc.astub",'insert',last_opt)	# TODO: -AsafeDefaultsForUncheckedBytecode
-	if tool == "eradicate":
+	if is_infer(tool):
 		final_args = [a if is_opt(a) or "$" not in a else "'"+a+"'" for a in final_args]
 	final_args = " ".join(final_args)
-	if tool=="eradicate": return infer_cmd+final_args
+	if is_infer(tool): return infer_cmd(tool)+final_args
 	return (compile_bench_cmd if tool=="checkerframework" else compile_bench_na_cmd)+bench_arg+final_args+"'"
 
 processed_suffix = ".clean"

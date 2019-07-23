@@ -13,7 +13,7 @@ patch_prefix = "patches"
 script_file = "script.sh"
 arg_prefix = "compile_args"
 arg_suffix = ".arg"
-processors = ["nullaway","base","checkerframework","eradicate"]
+processors = ["nullaway","base","checkerframework","eradicate","nullsafe","gradual"]
 
 config = configparser.ConfigParser()
 config.read('config.ini')
