@@ -52,10 +52,14 @@ bench_arg = "-debug -w 5 -r 5 " if daemonBuild else "-debug -w 0 -r 1 "
 
 
 def infer_cmd(tool):
-    return "time -f \"Average running time %E\" "+os.environ['FB_INFER']+"/bin/infer run --"+tool+"-only -- javac "
+	if tool == "dereferences" or tool == "unannotated":
+		expanded = "--gradual-only --gradual-"+tool
+	else:
+		expanded = "--"+tool+"-only"
+	return "time -f \"Average running time %E\" "+os.environ['FB_INFER']+"/bin/infer run "+expanded+" -- javac "
 
 def is_infer(tool):
-    return tool == "eradicate" or tool == "nullsafe" or tool == "gradual"
+    return tool == "eradicate" or tool == "nullsafe" or tool == "gradual" or tool == "dereferences" or tool == "unannotated"
 
 def prepare_args(args,tool="base"):
 	final_args = args.split()
