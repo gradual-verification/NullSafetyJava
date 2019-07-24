@@ -1,0 +1,19 @@
+#!/bin/sh
+./run.sh okbuck
+./run.sh caffeine
+./run.sh jib
+./run.sh skaffold-tools-for-java
+./run.sh AutoDispose
+./run.sh ReactiveNetwork
+./run.sh keyvaluestore
+./run.sh filesystem-generator
+./run.sh butterknife
+./run.sh picasso
+./run.sh RIBs
+./run.sh FloatingActionButtonSpeedDial
+./run.sh uLeak
+./run.sh QRContact
+./run.sh test-ribs
+./run.sh ColdSnap
+./run.sh OANDAFX
+./run.sh meal-planner
